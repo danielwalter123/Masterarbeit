@@ -9,14 +9,14 @@
     <script src="webcomponent.js" type="module"></script>
     <script src="https://purl.org/eaas/eaas.js"></script>
     
-    <script src="preprocess.js"></script>
     <script src="main.js"></script>
   </head>
   <body>
     <div>
+      <button id="reload" style="margin: 20px; width: 200px; height: 50px;">Reload</button>
       <button id="start" style="margin: 20px; width: 200px; height: 50px;">Scan</button>
     </div>
-    <eaas-environment id="env"
+    <eaas-environment id="env" autoplay
       eaas-service="https://demo.emulation.cloud/emil/"
       environment-id="9974307a-a504-49f2-91e1-3878a1388e08">
     
@@ -26,5 +26,6 @@
     
     </eaas-environment>
     <canvas id="output"></canvas>
+    <div id="button-container"></div>
   </body>
 </html>
