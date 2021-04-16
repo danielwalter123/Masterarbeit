@@ -1,8 +1,6 @@
 window.onload =  function() {
 
-  import('./automation.js');
-  
-  document.getElementById('reload').onclick = function () {
+  document.getElementById('initialize').onclick = function () {
     import('./automation.js?queryToInvalidateCache=' + Date.now());
   };
   
