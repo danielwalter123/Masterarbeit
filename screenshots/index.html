@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tesseract.js Screenshot Test</title>
+    <script src="../opencv.js"></script>
+    <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script>
+    <script src="main.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: arial;
+        }
+        #screenshots {
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        #screenshots > div {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #screenshots button {
+            width: 80px;
+            height: 80px;
+            margin-right: 20px;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+        #filter {
+            display: flex;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+            background-color: white;
+            border-bottom: 4px solid #000;
+        }
+        #filter > div {
+            margin: 20px;
+        }
+        #filter input[type="number"] {
+            width: 40px;
+        }
+        div[id^='result'] {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            overflow-x: auto;
+        }
+        img, canvas {
+            margin-right: 10px;
+            border: 4px solid #000;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="filter">
+        <div>
+            <input checked id="ocr" type="checkbox">
+            <label for="ocr">OCR</label>
+        </div>
+        <div>Preprocessing:</div>
+        <div>
+            <input id="upscaling" type="checkbox">
+            <label for="upscaling">Upscaling</label>
+            <input id="upscaling-factor" type="number" value="2">
+        </div>
+        <div>
+            <input id="threshold" type="checkbox">
+            <label for="threshold">Adaptive Threshold</label>
+            <input id="threshold-blocksize" type="number" value="5">
+            <input id="threshold-c" type="number" value="20">
+        </div>
+        
+        <div style="flex: 1"></div>
+    </div>
+
+    <div id="screenshots">
+        <div><button disabled onclick="scanAll()">Scan All</button></div>
+        <div><button disabled id="button00" onclick="scan('00')">Scan 00</button><img id="img00" src="00.png"><div id="result00"></div></div>
+        <div><button disabled id="button01" onclick="scan('01')">Scan 01</button><img id="img01" src="01.png"><div id="result01"></div></div>
+        <div><button disabled id="button02" onclick="scan('02')">Scan 02</button><img id="img02" src="02.png"><div id="result02"></div></div>
+        <div><button disabled id="button03" onclick="scan('03')">Scan 03</button><img id="img03" src="03.png"><div id="result03"></div></div>
+        <div><button disabled id="button04" onclick="scan('04')">Scan 04</button><img id="img04" src="04.png"><div id="result04"></div></div>
+        <div><button disabled id="button05" onclick="scan('05')">Scan 05</button><img id="img05" src="05.png"><div id="result05"></div></div>
+        <div><button disabled id="button06" onclick="scan('06')">Scan 06</button><img id="img06" src="06.png"><div id="result06"></div></div>
+        <div><button disabled id="button07" onclick="scan('07')">Scan 07</button><img id="img07" src="07.png"><div id="result07"></div></div>
+        <div><button disabled id="button08" onclick="scan('08')">Scan 08</button><img id="img08" src="08.png"><div id="result08"></div></div>
+        <div><button disabled id="button09" onclick="scan('09')">Scan 09</button><img id="img09" src="09.png"><div id="result09"></div></div>
+        <div><button disabled id="button10" onclick="scan('10')">Scan 10</button><img id="img10" src="10.png"><div id="result10"></div></div>
+        <div><button disabled id="button11" onclick="scan('11')">Scan 11</button><img id="img11" src="11.png"><div id="result11"></div></div>
+        <div><button disabled id="button12" onclick="scan('12')">Scan 12</button><img id="img12" src="12.png"><div id="result12"></div></div>
+        <div><button disabled id="button13" onclick="scan('13')">Scan 13</button><img id="img13" src="13.png"><div id="result13"></div></div>
+    </div>
+  </body>
+</html>

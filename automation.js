@@ -13,19 +13,26 @@ const emulatorContainer = document.getElementById('emulator-container');
 const scheduler = createScheduler();
 
 (async () => {
-  for (let i = 0; i < 1; i++) {
+  const initButton = document.getElementById('initialize');
+  const scanButton = document.getElementById('start');
+  initButton.disabled = true;
+  scanButton.disabled = true;
+  
+  for (let i = 0; i < 4; i++) {
     const worker = createWorker({
       logger: m => console.log(m)
     });
     await worker.load();
     await worker.loadLanguage('eng+deu');
     await worker.initialize('eng+deu');
-    await worker.setParameters({
-      tessedit_pageseg_mode: PSM.SPARSE_TEXT
-    });
+    //await worker.setParameters({
+    //  tessedit_pageseg_mode: PSM.SPARSE_TEXT
+    //});
     scheduler.addWorker(worker);
   }
-  console.log("Initialization done")
+  console.log("Initialization done");
+  initButton.disabled = false;
+  scanButton.disabled = false;
 })();
 
 
@@ -51,25 +58,60 @@ function thresholdFilter(pixels, level) {
 }
 
 
+const SCALE_FACTOR = 2;
+
 function click (x, y) {
+  x = x / SCALE_FACTOR;
+  y = y / SCALE_FACTOR;
   guac.sendMouseState(new Guacamole.Mouse.State(x, y, true));
   guac.sendMouseState(new Guacamole.Mouse.State(x, y, false));
 }
 
 
 function scan () {
-  output.width = input.width;
-  output.height = input.height;
-  context.drawImage(input, 0, 0);
+  output.width = input.width * SCALE_FACTOR;
+  output.height = input.height * SCALE_FACTOR;
+  context.drawImage(input, 0, 0, output.width, output.height);
+  
+  const rectangles = [
+    {
+      left: 0,
+      top: 0,
+      width: output.width * 0.6,
+      height: output.height * 0.6,
+    },
+    {
+      left: output.width * 0.4,
+      top: 0,
+      width: output.width * 0.6,
+      height: output.height * 0.6,
+    },
+    {
+      left: 0,
+      top: output.height * 0.4,
+      width: output.width * 0.6,
+      height: output.height * 0.6,
+    },
+    {
+      left: output.width * 0.4,
+      top: output.height * 0.4,
+      width: output.width * 0.6,
+      height: output.height * 0.6,
+    }
+  ];
   
   const imageData = context.getImageData(0, 0, output.width, output.height);
-  //thresholdFilter(imageData.data, 0.5);
+  thresholdFilter(imageData.data, 0.5);
   context.putImageData(imageData, 0, 0);
   
   (async () => {
     
-    let { data: { words } } = await scheduler.addJob('recognize', output);
-    // words = words.filter(word => word.confidence > 40 && word.text.length > 1)
+    const results = await Promise.all(rectangles.map((rectangle) => scheduler.addJob('recognize', output, { rectangle })));
+    
+    const words = [];
+    for (let result of results) {
+      words.push(...result.data.words)
+    }
     console.log(words);
     
     context.strokeStyle = 'red';
