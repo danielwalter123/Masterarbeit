@@ -41,8 +41,6 @@ function scanAll () {
   }
 }
 
-const SCALE_FACTOR = 2;
-
 function scan (id) {
 
   
@@ -55,18 +53,16 @@ function scan (id) {
   const doUpscaling = document.getElementById('upscaling').checked
   const doBilateralFilter = document.getElementById('bilateral-filter').checked
   const doThreshold = document.getElementById('threshold').checked
-  
-  const doOCR = document.getElementById('ocr').checked
-  
-  const SCALE_FACTOR = doUpscaling ? Number(document.getElementById('upscaling-factor').value) : 1;
-  
 
-  
+  const doOCR = document.getElementById('ocr').checked
+
   // OpenCV preprocessing
   let src = cv.imread(img);
-  let dst = new cv.Mat();
+  
   if (doUpscaling) {
-    cv.resize(src, dst, new cv.Size(0, 0), SCALE_FACTOR, SCALE_FACTOR);
+    const scaleFactor = Number(document.getElementById('upscaling-factor').value);
+    const dst = new cv.Mat();
+    cv.resize(src, dst, new cv.Size(0, 0), scaleFactor, scaleFactor);
     src.delete();
     src = dst;
   }
@@ -75,7 +71,7 @@ function scan (id) {
     const d = Number(document.getElementById('bilateral-filter-d').value);
     const sigmaColor = Number(document.getElementById('bilateral-filter-sigma-color').value);
     const sigmaSpace = Number(document.getElementById('bilateral-filter-sigma-space').value);
-    dst = new cv.Mat();
+    const dst = new cv.Mat();
     cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
     cv.bilateralFilter(src, dst, d, sigmaColor, sigmaSpace, cv.BORDER_DEFAULT);
     src.delete();
@@ -85,7 +81,7 @@ function scan (id) {
   if (doThreshold) {
     const blockSize = Number(document.getElementById('threshold-blocksize').value);
     const c = Number(document.getElementById('threshold-c').value);
-    dst = new cv.Mat();
+    const dst = new cv.Mat();
     cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
     cv.adaptiveThreshold(src, dst, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, blockSize, c);
     src.delete();
