@@ -52,8 +52,10 @@ function scan (id) {
   
   document.getElementById('result' + id).prepend(canvas);
   
-  const doThreshold = document.getElementById('threshold').checked
   const doUpscaling = document.getElementById('upscaling').checked
+  const doBilateralFilter = document.getElementById('bilateral-filter').checked
+  const doThreshold = document.getElementById('threshold').checked
+  
   const doOCR = document.getElementById('ocr').checked
   
   const SCALE_FACTOR = doUpscaling ? Number(document.getElementById('upscaling-factor').value) : 1;
@@ -61,18 +63,36 @@ function scan (id) {
 
   
   // OpenCV preprocessing
-  let imgData = cv.imread(img);
+  let src = cv.imread(img);
+  let dst = new cv.Mat();
   if (doUpscaling) {
-    cv.resize(imgData, imgData, new cv.Size(0, 0), SCALE_FACTOR, SCALE_FACTOR);
+    cv.resize(src, dst, new cv.Size(0, 0), SCALE_FACTOR, SCALE_FACTOR);
+    src.delete();
+    src = dst;
   }
+  
+  if (doBilateralFilter) {
+    const d = Number(document.getElementById('bilateral-filter-d').value);
+    const sigmaColor = Number(document.getElementById('bilateral-filter-sigma-color').value);
+    const sigmaSpace = Number(document.getElementById('bilateral-filter-sigma-space').value);
+    dst = new cv.Mat();
+    cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
+    cv.bilateralFilter(src, dst, d, sigmaColor, sigmaSpace, cv.BORDER_DEFAULT);
+    src.delete();
+    src = dst;
+  }
+
   if (doThreshold) {
     const blockSize = Number(document.getElementById('threshold-blocksize').value);
     const c = Number(document.getElementById('threshold-c').value);
-    cv.cvtColor(imgData, imgData, cv.COLOR_RGBA2GRAY, 0);
-    cv.adaptiveThreshold(imgData, imgData, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, blockSize, c);
+    dst = new cv.Mat();
+    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+    cv.adaptiveThreshold(src, dst, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, blockSize, c);
+    src.delete();
+    src = dst;
   }
-  cv.imshow(canvas, imgData);
-  imgData.delete();
+  cv.imshow(canvas, src);
+  src.delete();
   
   if (!doOCR) return;
 
