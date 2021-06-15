@@ -18,7 +18,7 @@ const scheduler = createScheduler();
   initButton.disabled = true;
   scanButton.disabled = true;
   
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 2; i++) {
     const worker = createWorker({
       logger: m => console.log(m)
     });
@@ -67,51 +67,38 @@ function click (x, y) {
   guac.sendMouseState(new Guacamole.Mouse.State(x, y, false));
 }
 
+let lastImage = null;
 
 function scan () {
-  output.width = input.width * SCALE_FACTOR;
-  output.height = input.height * SCALE_FACTOR;
-  context.drawImage(input, 0, 0, output.width, output.height);
   
-  const rectangles = [
-    {
-      left: 0,
-      top: 0,
-      width: output.width * 0.6,
-      height: output.height * 0.6,
-    },
-    {
-      left: output.width * 0.4,
-      top: 0,
-      width: output.width * 0.6,
-      height: output.height * 0.6,
-    },
-    {
-      left: 0,
-      top: output.height * 0.4,
-      width: output.width * 0.6,
-      height: output.height * 0.6,
-    },
-    {
-      left: output.width * 0.4,
-      top: output.height * 0.4,
-      width: output.width * 0.6,
-      height: output.height * 0.6,
-    }
-  ];
+  // OpenCV preprocessing
   
-  const imageData = context.getImageData(0, 0, output.width, output.height);
-  thresholdFilter(imageData.data, 0.5);
-  context.putImageData(imageData, 0, 0);
+  
+  let src = cv.imread(input);
+  let dst = new cv.Mat();
+  
+  if (lastImage != null) {
+    cv.subtract(src, lastImage, dst);
+    lastImage.delete();
+  } else {
+    dst = src;
+  }
+  lastImage = src;
+
+  src = dst;
+  dst = new cv.Mat();
+
+  cv.resize(src, dst, new cv.Size(0, 0), SCALE_FACTOR, SCALE_FACTOR);
+
+
+  cv.imshow(output, dst);
+  dst.delete();
+  
   
   (async () => {
     
-    const results = await Promise.all(rectangles.map((rectangle) => scheduler.addJob('recognize', output, { rectangle })));
-    
-    const words = [];
-    for (let result of results) {
-      words.push(...result.data.words)
-    }
+    const result = await scheduler.addJob('recognize', output);
+    const words = result.data.words;
     console.log(words);
     
     context.strokeStyle = 'red';

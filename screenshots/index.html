@@ -75,9 +75,14 @@
         </div>
         <div>
             <input id="threshold" type="checkbox">
-            <label for="threshold">Adaptive Threshold</label>
-            <input id="threshold-blocksize" type="number" value="5">
-            <input id="threshold-c" type="number" value="20">
+            <label for="threshold">Threshold</label>
+            <input id="threshold-val" type="number" value="120">
+        </div>
+        <div>
+            <input id="adapt-threshold" type="checkbox">
+            <label for="adapt-threshold">Adaptive Threshold</label>
+            <input id="adapt-threshold-blocksize" type="number" value="5">
+            <input id="adapt-threshold-c" type="number" value="20">
         </div>
         
         <div style="flex: 1"></div>
@@ -87,8 +92,10 @@
         <div><button disabled onclick="scanAll()">Scan All</button></div>
         <div><button disabled id="button00" onclick="scan('00')">Scan 00</button><img id="img00" src="00.png"><div id="result00"></div></div>
         <div><button disabled id="button01" onclick="scan('01')">Scan 01</button><img id="img01" src="01.png"><div id="result01"></div></div>
+        <div><button disabled id="button01u" onclick="scan('01u')">Scan 01u</button><img id="img01u" src="01u.png"><div id="result01u"></div></div>
         <div><button disabled id="button02" onclick="scan('02')">Scan 02</button><img id="img02" src="02.png"><div id="result02"></div></div>
         <div><button disabled id="button03" onclick="scan('03')">Scan 03</button><img id="img03" src="03.png"><div id="result03"></div></div>
+        <div><button disabled id="button03u" onclick="scan('03u')">Scan 03u</button><img id="img03u" src="03u.png"><div id="result03u"></div></div>
         <div><button disabled id="button04" onclick="scan('04')">Scan 04</button><img id="img04" src="04.png"><div id="result04"></div></div>
         <div><button disabled id="button05" onclick="scan('05')">Scan 05</button><img id="img05" src="05.png"><div id="result05"></div></div>
         <div><button disabled id="button06" onclick="scan('06')">Scan 06</button><img id="img06" src="06.png"><div id="result06"></div></div>

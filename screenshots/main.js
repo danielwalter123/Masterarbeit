@@ -9,6 +9,7 @@ window.onload = async function() {
     filterBar.appendChild(workerProgress);
     
     const worker = createWorker({
+      langPath: 'http://localhost:50337/tessdata/',
       logger: m => {
         console.log(m);
         workerProgress.innerHTML = Math.floor(m.progress * 100) + '%';
@@ -17,9 +18,9 @@ window.onload = async function() {
     await worker.load();
     await worker.loadLanguage('eng+deu');
     await worker.initialize('eng+deu');
-    //await worker.setParameters({
-    //  tessedit_pageseg_mode: PSM.SPARSE_TEXT
-    //});
+    await worker.setParameters({
+      tessedit_pageseg_mode: 12
+    });
     scheduler.addWorker(worker);
   }
 
@@ -53,14 +54,15 @@ function scan (id) {
   const doUpscaling = document.getElementById('upscaling').checked
   const doBilateralFilter = document.getElementById('bilateral-filter').checked
   const doThreshold = document.getElementById('threshold').checked
+  const doAdaptThreshold = document.getElementById('adapt-threshold').checked
 
   const doOCR = document.getElementById('ocr').checked
 
   // OpenCV preprocessing
   let src = cv.imread(img);
   
+  const scaleFactor = Number(document.getElementById('upscaling-factor').value);
   if (doUpscaling) {
-    const scaleFactor = Number(document.getElementById('upscaling-factor').value);
     const dst = new cv.Mat();
     cv.resize(src, dst, new cv.Size(0, 0), scaleFactor, scaleFactor);
     src.delete();
@@ -77,10 +79,19 @@ function scan (id) {
     src.delete();
     src = dst;
   }
-
+  
   if (doThreshold) {
-    const blockSize = Number(document.getElementById('threshold-blocksize').value);
-    const c = Number(document.getElementById('threshold-c').value);
+    const val = Number(document.getElementById('threshold-val').value);
+    const dst = new cv.Mat();
+    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+    cv.threshold(src, dst, val, 255, cv.THRESH_BINARY);
+    src.delete();
+    src = dst;
+  }
+  
+  if (doAdaptThreshold) {
+    const blockSize = Number(document.getElementById('adapt-threshold-blocksize').value);
+    const c = Number(document.getElementById('adapt-threshold-c').value);
     const dst = new cv.Mat();
     cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
     cv.adaptiveThreshold(src, dst, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, blockSize, c);
@@ -97,11 +108,15 @@ function scan (id) {
   button.style.background = 'red';
   button.style.color = 'white';
   
+  context.font = '12px Arial';
+  context.textAlign = "center";
+  context.strokeStyle = 'red';
+  
   scheduler.addJob('recognize', canvas).then(result => {
     console.log(result);
     context.strokeStyle = 'red';
     for (let word of result.data.words) {
-      context.strokeStyle = 'red';
+      
       context.fillStyle = 'white';
       context.beginPath();
       context.rect(word.bbox.x0, word.bbox.y0, word.bbox.x1 - word.bbox.x0, word.bbox.y1 - word.bbox.y0);
@@ -109,8 +124,6 @@ function scan (id) {
       context.stroke();
       
       context.fillStyle = 'black';
-      context.font = '12px Arial';
-      context.textAlign = "center";
       context.fillText(word.text, (word.bbox.x0 + word.bbox.x1) / 2, (word.bbox.y0 + word.bbox.y1) / 2 + 6);
     }
     button.disabled = false;
