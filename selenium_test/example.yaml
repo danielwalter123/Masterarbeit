@@ -1,0 +1,40 @@
+---
+-
+  - click
+  - OK
+-
+  - click
+  - OK
+-
+  - click
+  - Start
+-
+  - click
+  - Programs
+-
+  - click
+  - Accessories
+-
+  - click
+  - Notepad
+-
+  - input
+  - Automated test document
+-
+  - click
+  - File
+-
+  - click
+  - Save
+-
+  - input
+  - test.txt
+-
+  - click
+  - Save
+-
+  - click
+  - File
+-
+  - click
+  - Exit
