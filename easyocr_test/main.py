@@ -10,7 +10,7 @@ Tk().withdraw()
 
 print("init")
 
-reader = easyocr.Reader(['en']) # need to run only once to load model into memory
+reader = easyocr.Reader(['en'])
 
 print("ready")
 
