@@ -56,14 +56,14 @@ while step:
 
     if step[0] == "input":
         time.sleep(3)
+        action = ActionChains(driver)
         for char in step[1]:
-            action = ActionChains(driver)
-            action.reset_actions()
             if char.isupper():
                 action.key_down(Keys.SHIFT)
             action.send_keys(char)
-            action.perform()
-            time.sleep(0.1)
+            action.key_up(Keys.SHIFT)
+            action.pause(0.1)
+        action.perform()
         step = steps.pop(0) if len(steps) > 0 else None
         continue
 
