@@ -58,6 +58,7 @@ while step:
         time.sleep(3)
         for char in step[1]:
             action = ActionChains(driver)
+            action.reset_actions()
             if char.isupper():
                 action.key_down(Keys.SHIFT)
             action.send_keys(char)
