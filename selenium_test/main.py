@@ -50,12 +50,12 @@ step = steps.pop(0)
 while step:
     print("Next step: " + str(step))
 
-    if type(step) is not list or len(step) < 2:
+    if not isinstance(step, list) or len(step) < 2 or step[0] not in ["click", "wait","input"]:
         print("Invalid step!")
+        step = steps.pop(0) if len(steps) > 0 else None
         continue
 
     if step[0] == "input":
-        time.sleep(3)
         action = ActionChains(driver)
         for char in step[1]:
             if char.isupper():
@@ -65,6 +65,12 @@ while step:
             action.pause(0.1)
         action.perform()
         step = steps.pop(0) if len(steps) > 0 else None
+        time.sleep(PAUSE_TIME)
+        continue
+    elif step[0] == "wait" and isinstance(step[1], (int, float)):
+        time.sleep(step[1])
+        step = steps.pop(0) if len(steps) > 0 else None
+        time.sleep(PAUSE_TIME)
         continue
 
     # Take a screenshot and crop it
@@ -101,25 +107,25 @@ while step:
 
     for r in result:
         print(r[1])
-        draw = ImageDraw.Draw(img)
-        top_left = (r[0][0][0], r[0][0][1])
-        bottom_right = (r[0][2][0], r[0][2][1])
-        draw.rectangle((top_left, bottom_right), outline="red")
 
         ocr_text = r[1].lower()
         step_text = step[1].lower()
 
         if ocr_text == step_text or (step_text in OCR_FIX and ocr_text in OCR_FIX[step_text]):
-            center = np.divide(np.add(top_left, bottom_right), 2)
-            action = ActionChains(driver)
-            action.reset_actions()
-            action.move_to_element_with_offset(elem, center[0], center[1])
-            action.click()
-            action.perform()
+            if step[0] == "click":
+                top_left = (r[0][0][0], r[0][0][1])
+                bottom_right = (r[0][2][0], r[0][2][1])
+                center = np.divide(np.add(top_left, bottom_right), 2)
+                action = ActionChains(driver)
+                action.reset_actions()
+                action.move_to_element_with_offset(elem, center[0], center[1])
+                action.click()
+                action.perform()
+            elif step[0] == "wait":
+                print("Found: " + step_text)
             step = steps.pop(0) if len(steps) > 0 else None
             break
 
-    #img.show()
     time.sleep(PAUSE_TIME)
 
 #driver.close()

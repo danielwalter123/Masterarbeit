@@ -1,8 +1,7 @@
 import os
 import time
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from PIL import Image
+from PIL import Image, ImageDraw
 from io import BytesIO
 import numpy as np
 import easyocr
@@ -34,5 +33,12 @@ while True:
 
     for r in result:
         print(r[1])
+        draw = ImageDraw.Draw(img)
+        top_left = (r[0][0][0], r[0][0][1])
+        bottom_right = (r[0][2][0], r[0][2][1])
+        draw.rectangle((top_left, bottom_right), outline="red")
+
+    img.show()
+
 
 driver.close()
