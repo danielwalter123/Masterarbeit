@@ -96,7 +96,7 @@ while step:
 
     last_scanned_img = img.copy()
     print("Scanning image.")
-    result = reader.readtext(np.asarray(img), min_size=5, mag_ratio=2)
+    result = reader.readtext(np.asarray(img), decoder="wordbeamsearch", min_size=5, mag_ratio=2)
     print("Scan complete.")
 
     for r in result:
