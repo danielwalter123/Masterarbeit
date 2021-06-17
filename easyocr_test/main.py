@@ -21,7 +21,7 @@ while True:
     image = Image.open(path)
     data = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
     
-    result = reader.readtext(data, decoder="wordbeamsearch", batch_size=100, min_size=5, mag_ratio=2)
+    result = reader.readtext(data, decoder="wordbeamsearch", min_size=5, mag_ratio=2)
 
     for r in result:
         print(r[1])
