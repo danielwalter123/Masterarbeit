@@ -1,3 +1,4 @@
-traindata
-geckodriver.log
+__pycache__
 .vscode
+geckodriver.exe
+geckodriver.log

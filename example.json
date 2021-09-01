@@ -1,0 +1,171 @@
+[
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "OK"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "OK"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Start"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Programs"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Accessories"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Notepad"
+                }
+            }
+        }
+    },
+    {
+        "type": "keyboard",
+        "prerequisites": [
+            {
+                "type": "ocr",
+                "data": "Untitled"
+            }
+        ],
+        "data": {
+            "type": "text",
+            "text": "Automated test document"
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "File"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Save"
+                }
+            }
+        }
+    },
+    {
+        "type": "keyboard",
+        "prerequisites": [
+            {
+                "type": "ocr",
+                "data": "File Name:"
+            }
+        ],
+        "data": {
+            "type": "text",
+            "text": "test.txt"
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Save"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "File"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Exit"
+                }
+            }
+        }
+    }
+]
