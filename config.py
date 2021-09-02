@@ -1,2 +1,2 @@
-system = "selenium"
+system = "pyqt"
 steps = "example.json"
