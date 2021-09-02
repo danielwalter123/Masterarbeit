@@ -1,8 +1,6 @@
 import os
 import sys
-from threading import Thread
 from multiprocessing import Process, Pipe
-from typing_extensions import runtime
 from PyQt5 import QtGui
 from PyQt5.QtTest import QTest
 from PyQt5.QtCore import *
@@ -23,10 +21,7 @@ def _gui(conn):
     web.load(QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")))
     web.show()
 
-    web_child = None
-    for child in web.findChildren(QWidget):
-        if (child.metaObject().className() == "QtWebEngineCore::RenderWidgetHostViewQtDelegateWidget"):
-            web_child = child
+    web_child = web.focusProxy()
 
     class Worker(QObject):
         func_signal = pyqtSignal(tuple)

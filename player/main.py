@@ -1,3 +1,4 @@
+import os
 import json
 import importlib
 import actions
@@ -12,7 +13,8 @@ if __name__ == "__main__":
 
     # Read json file
     steps = None
-    with open(config.steps, 'r') as file:
+    steps_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), config.steps)
+    with open(steps_file, 'r') as file:
         steps = json.load(file)
 
     if not steps or type(steps) is not list:
