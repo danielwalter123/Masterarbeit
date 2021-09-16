@@ -21,13 +21,13 @@ last_scanned_img = None
 
 last_result = None
 
-def scan():
+def _scan():
     global last_img, last_scanned_img, last_result
 
     while True:
         img = system.screenshot()
         if last_img:
-            if image_diff(last_img, img) > 0.05:
+            if _image_diff(last_img, img) > 0.05:
                 print("Image is not stable.")
                 last_img = img.copy()
                 time.sleep(PAUSE_TIME)
@@ -38,7 +38,7 @@ def scan():
             continue
         break
     
-    if last_scanned_img and image_diff(last_scanned_img, img) == 0 and last_result:
+    if last_scanned_img and _image_diff(last_scanned_img, img) == 0 and last_result:
         return last_result
 
     last_scanned_img = img.copy()
@@ -48,7 +48,7 @@ def scan():
     return last_result
     
 
-def image_diff(img1, img2):
+def _image_diff(img1, img2):
     if img1.mode != img2.mode or img1.size != img2.size or img1.getbands() != img2.getbands():
         return 1.0
     diff = ImageChops.difference(img1, img2)
@@ -59,8 +59,8 @@ def image_diff(img1, img2):
     return diff_ratio
 
 
-def find_text(text):
-    result = scan()
+def _find_text(text):
+    result = _scan()
     text = text.lower()
     for r in result:
         ocr_text = r[1].lower()
@@ -70,7 +70,7 @@ def find_text(text):
 
 
 def resolve_position(data):
-    match = find_text(data)
+    match = _find_text(data)
     if not match:
         return None
     top_left = (match[0][0][0], match[0][0][1])
@@ -81,5 +81,5 @@ def resolve_position(data):
 def wait(data):
     match = None
     while not match:
-        match = find_text(data)
+        match = _find_text(data)
         time.sleep(PAUSE_TIME)
