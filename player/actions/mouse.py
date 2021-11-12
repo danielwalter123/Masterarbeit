@@ -14,3 +14,5 @@ def click(position):
         information.handlers[info["type"]].wait(info["data"])
         x, y = information.handlers[info["type"]].resolve_position(info["data"])
         system.click(x, y)
+    elif position["type"] == "coordinates":
+        system.click(position["data"]["x"], position["data"]["y"])
