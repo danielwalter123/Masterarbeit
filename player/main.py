@@ -13,7 +13,8 @@ if __name__ == "__main__":
 
     # Read json file
     steps = None
-    steps_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), config.steps)
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    steps_file = os.path.join(base_path, config.steps)
     with open(steps_file, 'r') as file:
         steps = json.load(file)
 

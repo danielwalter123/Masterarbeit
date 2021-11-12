@@ -18,11 +18,14 @@ def _gui(conn):
     web.setFixedWidth(640)
     web.setFixedHeight(480)
 
-    web.load(QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")))
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    web.load(QUrl.fromLocalFile(os.path.join(base_path, "index.html")))
     web.show()
 
+    # The child element of the webview which handles input events
     web_child = web.focusProxy()
 
+    # Worker which handles the communication with the Recorder through the pipe
     class Worker(QObject):
         func_signal = pyqtSignal(tuple)
         running = True
@@ -42,14 +45,28 @@ def _gui(conn):
     def exec_func(data):
         func, args = data
         if func == "click":
-            app.postEvent(web_child, QtGui.QMouseEvent(QEvent.MouseMove, QPoint(args[0], args[1]), Qt.MouseButton.NoButton, Qt.MouseButton.NoButton, Qt.NoModifier))
-            app.postEvent(web_child, QtGui.QMouseEvent(QEvent.MouseButtonPress, QPoint(args[0], args[1]), Qt.MouseButton.LeftButton, Qt.MouseButton.LeftButton, Qt.NoModifier))
-            app.postEvent(web_child, QtGui.QMouseEvent(QEvent.MouseButtonRelease, QPoint(args[0], args[1]), Qt.MouseButton.LeftButton, Qt.MouseButton.LeftButton, Qt.NoModifier))
+            app.postEvent(web_child, QtGui.QMouseEvent(QEvent.MouseMove,
+                                                       QPoint(args[0], args[1]),
+                                                       Qt.MouseButton.NoButton,
+                                                       Qt.MouseButton.NoButton,
+                                                       Qt.NoModifier))
+            app.postEvent(web_child, QtGui.QMouseEvent(QEvent.MouseButtonPress,
+                                                       QPoint(args[0], args[1]),
+                                                       Qt.MouseButton.LeftButton,
+                                                       Qt.MouseButton.LeftButton,
+                                                       Qt.NoModifier))
+            app.postEvent(web_child, QtGui.QMouseEvent(QEvent.MouseButtonRelease,
+                                                       QPoint(args[0], args[1]),
+                                                       Qt.MouseButton.LeftButton,
+                                                       Qt.MouseButton.LeftButton,
+                                                       Qt.NoModifier))
             conn.send(None)
         elif func == "text":
             for char in args[0]:
-                app.postEvent(web_child, QtGui.QKeyEvent(QEvent.KeyPress, 0, Qt.NoModifier, char))
-                app.postEvent(web_child, QtGui.QKeyEvent(QEvent.KeyRelease, 0, Qt.NoModifier, char))
+                app.postEvent(web_child, QtGui.QKeyEvent(QEvent.KeyPress, 0,
+                                                        Qt.NoModifier, char))
+                app.postEvent(web_child, QtGui.QKeyEvent(QEvent.KeyRelease, 0,
+                                                         Qt.NoModifier, char))
                 QTest.qWait(100)
             conn.send(None)
         elif func == "screenshot":
@@ -66,13 +83,12 @@ def _gui(conn):
     sys.exit()
 
 
-
 main_conn, gui_conn = Pipe()
 
 def init():
+    # Start GUI in separate process to prevent blocking
     gui_process = Process(target=_gui, args=(gui_conn,), daemon=True)
     gui_process.start()
-
 
 def click(x, y):
     main_conn.send(("click", (x, y)))
