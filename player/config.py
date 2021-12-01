@@ -1,2 +1,2 @@
 system = "pyqt"
-steps = "example.json"
+steps = "example2.json"

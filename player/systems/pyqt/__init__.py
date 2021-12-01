@@ -15,8 +15,8 @@ def _gui(conn):
 
     web = QWebEngineView()
     web.setWindowTitle("System")
-    web.setFixedWidth(640)
-    web.setFixedHeight(480)
+    web.setFixedWidth(800)
+    web.setFixedHeight(600)
 
     base_path = os.path.dirname(os.path.abspath(__file__))
     web.load(QUrl.fromLocalFile(os.path.join(base_path, "index.html")))
@@ -50,11 +50,13 @@ def _gui(conn):
                                                        Qt.MouseButton.NoButton,
                                                        Qt.MouseButton.NoButton,
                                                        Qt.NoModifier))
+            QTest.qWait(100)
             app.postEvent(web_child, QtGui.QMouseEvent(QEvent.MouseButtonPress,
                                                        QPoint(args[0], args[1]),
                                                        Qt.MouseButton.LeftButton,
                                                        Qt.MouseButton.LeftButton,
                                                        Qt.NoModifier))
+            QTest.qWait(100)
             app.postEvent(web_child, QtGui.QMouseEvent(QEvent.MouseButtonRelease,
                                                        QPoint(args[0], args[1]),
                                                        Qt.MouseButton.LeftButton,

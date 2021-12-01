@@ -1,0 +1,132 @@
+[
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "OK"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "File"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Quit"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "File"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Open"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "File"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "New Folder"
+                }
+            }
+        }
+    },
+    {
+        "type": "keyboard",
+        "prerequisites": [
+            {
+                "type": "ocr",
+                "data": "untitled folder"
+            }
+        ],
+        "data": {
+            "type": "text",
+            "text": "Test Folder"
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "File"
+                }
+            }
+        }
+    },
+    {
+        "type": "mouse",
+        "data": {
+            "type": "click",
+            "position": {
+                "type": "information",
+                "data": {
+                    "type": "ocr",
+                    "data": "Open"
+                }
+            }
+        }
+    }
+]
