@@ -22,13 +22,11 @@ if __name__ == "__main__":
         exit()
 
     # Execute steps
-    step = steps.pop(0)
-    while step:
+    for step in steps:
         print("Next step: " + str(step))
         if "prerequisites" in step and isinstance(step["prerequisites"], list):
             for pr in step["prerequisites"]:
                 information.handlers[pr["type"]].wait(pr["data"])
         actions.handlers[step["type"]].handle(step["data"])
-        step = steps.pop(0) if len(steps) > 0 else None
 
     input("Press any key to exit... ")
