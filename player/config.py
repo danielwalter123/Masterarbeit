@@ -1,2 +1,2 @@
-system = "pyqt-windows98"
+system = "selenium"
 steps = "example.json"
