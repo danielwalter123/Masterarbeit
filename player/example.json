@@ -7,32 +7,6 @@
                 "type": "information",
                 "data": {
                     "type": "ocr",
-                    "data": "OK"
-                }
-            }
-        }
-    },
-    {
-        "type": "mouse",
-        "data": {
-            "type": "click",
-            "position": {
-                "type": "information",
-                "data": {
-                    "type": "ocr",
-                    "data": "OK"
-                }
-            }
-        }
-    },
-    {
-        "type": "mouse",
-        "data": {
-            "type": "click",
-            "position": {
-                "type": "information",
-                "data": {
-                    "type": "ocr",
                     "data": "Start"
                 }
             }

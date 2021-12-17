@@ -1,2 +1,2 @@
-system = "pyqt"
-steps = "example2.json"
+system = "pyqt-windows98"
+steps = "example.json"
