@@ -27,6 +27,9 @@ def _scan():
     # and comapring it to the last one.
     while True:
         img = system.screenshot()
+        if img.size[0] == 0 or img.size[1] == 0:
+            time.sleep(PAUSE_TIME)
+            continue
         if last_img:
             if _image_diff(last_img, img) > 0.05:
                 print("Image is not stable.")
