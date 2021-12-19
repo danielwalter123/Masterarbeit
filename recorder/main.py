@@ -107,7 +107,7 @@ class EventFilter(QObject):
         self.click_start_point = None
         self.click_end_point = None
 
-        self.screenshot.show()
+        # self.screenshot.show()
         self.screenshot = None
 
     def eventFilter(self, source, event):

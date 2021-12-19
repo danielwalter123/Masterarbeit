@@ -8,18 +8,17 @@ from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtWidgets import QApplication, QWidget
 from PIL import Image
 from io import BytesIO
-
+import config
 
 def _gui(conn):
     app = QApplication(sys.argv)
 
     web = QWebEngineView()
     web.setWindowTitle("System")
-    web.setFixedWidth(640)
-    web.setFixedHeight(480)
+    web.resize(1000, 800)
 
     base_path = os.path.dirname(os.path.abspath(__file__))
-    web.load(QUrl.fromLocalFile(os.path.join(base_path, "index.html")))
+    web.load(QUrl.fromLocalFile(os.path.join(base_path, config.eaas_html)))
     web.show()
 
     # The child element of the webview which handles input events
@@ -62,6 +61,7 @@ def _gui(conn):
                                                        Qt.MouseButton.LeftButton,
                                                        Qt.MouseButton.LeftButton,
                                                        Qt.NoModifier))
+            QTest.qWait(100)
             conn.send(None)
         elif func == "text":
             for char in args[0]:

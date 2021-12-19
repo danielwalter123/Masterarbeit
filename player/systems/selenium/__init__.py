@@ -4,9 +4,10 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from PIL import Image
 from io import BytesIO
+import config
 
 driver = webdriver.Firefox()
-driver.get("file://" + os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html"))
+driver.get("file://" + os.path.join(os.path.dirname(os.path.abspath(__file__)), config.eaas_html))
 elem = driver.find_element_by_id("env")
 
 def screenshot():
